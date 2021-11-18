@@ -6,9 +6,12 @@ const problemesFaciles = {
     "enterapotentpot": ["a", "p", "ent", "enter", "ot", "o", "t"],
 };
 const problemesDifficile = {
-    "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef": ["e", "ee", "eee", "eeee", "eeeee", "eeeeee", "eeeeeeee"],
+    "eeeeeeeeeeeeeeeeeeeeeeeeeef": ["e", "ee", "eee", "eeee", "eeeee", "eeeeee", "eeeeeeee"],
 };
-const constructionPossible = (objectif, alphabet) => {
+const constructionPossible = (objectif, alphabet, memo = {}) => {
+    if (objectif in memo) {
+        return memo[objectif];
+    }
     if (objectif === "") {
         return true;
     }
@@ -16,10 +19,12 @@ const constructionPossible = (objectif, alphabet) => {
         if (objectif.indexOf(element) === 0) {
             const reste = objectif.slice(element.length);
             if (constructionPossible(reste, alphabet)) {
+                memo[objectif] = true;
                 return true;
             }
         }
     }
+    memo[objectif] = false;
     return false;
 };
 function bench(problemes) {
@@ -28,5 +33,5 @@ function bench(problemes) {
         console.log(`"${objectif}" -> ${constructionPossible(objectif, alphabet)}`);
     }
 }
-bench(problemesFaciles);
+bench(problemesDifficile);
 //# sourceMappingURL=stringConstruction.js.map

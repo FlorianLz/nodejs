@@ -9,12 +9,15 @@ const problemesFaciles: {
   const problemesDifficile: {
     [objectifs: string]: Array<string>;
   } = {
-    "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef": ["e","ee", "eee", "eeee", "eeeee", "eeeeee", "eeeeeeee"],
+    "eeeeeeeeeeeeeeeeeeeeeeeeeef": ["e","ee", "eee", "eeee", "eeeee", "eeeeee", "eeeeeeee"],
   };
 
 type ConstructionPossible = (objectif: string, alphabet: Array<string>) => boolean
 
-const constructionPossible: ConstructionPossible = (objectif: string, alphabet: Array<string>): boolean =>{
+const constructionPossible: ConstructionPossible = (objectif: string, alphabet: Array<string>, memo: {[objectif: string]: boolean} = {}): boolean =>{
+    if(objectif in memo){
+        return memo[objectif]
+    }
     if(objectif === ""){
         return true
     }
@@ -22,10 +25,12 @@ const constructionPossible: ConstructionPossible = (objectif: string, alphabet: 
         if(objectif.indexOf(element) === 0){
             const reste = objectif.slice(element.length)
             if(constructionPossible(reste, alphabet)){
+                memo[objectif] = true
                 return true
             }
         }
     }
+    memo[objectif] = false
     return false
 }
 
@@ -36,4 +41,4 @@ function bench (problemes: {[p: string]: Array<string>}){
     }
 }
 
-bench(problemesFaciles)
+bench(problemesDifficile)
